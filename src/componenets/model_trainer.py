@@ -58,18 +58,19 @@ class ModelTrainer:
             )
 
             ## Assumption: unique key with maximum value
-            best_model_name = max(model_report, key=model_report.get)
-            best_model_score = model_report[best_model_name]
-            best_model=models[best_model_name]
+            #best_model_name = max(model_report, key=model_report.get)
+            #best_model_score = model_report[best_model_name]
+            
 
             ## For multiple key with maximum value
-            #max_value = max(model_report.values())
-            #max_keys = [k for k, v in model_report.items() if v == max_value]
+            max_value = max(model_report.values())
+            max_keys = [k for k, v in model_report.items() if v == max_value]
+            best_model=models[max_keys[0]]
 
             
 
-            if best_model_score<0.6:
-            #if max_value<0.6:
+            #if best_model_score<0.6:
+            if max_value<0.6:
                 raise CustomException("No Best Model Found")
             logging.info(f"Best model found on both training and testing dataset")
 
@@ -83,9 +84,9 @@ class ModelTrainer:
             r2_square=r2_score(y_test,predicted)
 
             #return r2_square,best_model_name, best_model_score
-            #return max_keys,max_value 
+            return max_keys,max_value 
             #return best_model_name,best_model_score
-            return model_report
+            #return model_report
         
 
 
