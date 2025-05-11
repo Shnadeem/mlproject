@@ -7,17 +7,21 @@ from sklearn.ensemble import (
     AdaBoostRegressor,
     GradientBoostingRegressor,
     RandomForestRegressor,
+    ExtraTreesRegressor
 )
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet, HuberRegressor
+from sklearn.svm import SVR
 from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.dummy import DummyRegressor
 
 from src.exception import CustomException
 from src.logger import logging
 
-from src.utils import save_object, evaluate_models
+from src.utils import save_object, evaluate_models, param_grids
 
 
 @dataclass
@@ -42,11 +46,18 @@ class ModelTrainer:
                 "Decision Tree": DecisionTreeRegressor(),
                 "Gradient Boosting": GradientBoostingRegressor(),
                 "Linear Regression": LinearRegression(),
-                "Linear Regression1": LinearRegression(),
+                "Ridge": Ridge(),
+                "Lasso": Lasso(),
+                "ElasticNet": ElasticNet(),
+                "HuberRegressor": HuberRegressor(),
+            #    "ExtraTrees": ExtraTreesRegressor(),
+                "SVR": SVR(),
                 "K-Neighbors Regressor": KNeighborsRegressor(),
                 "XGB Regressor": XGBRegressor(),
                 "CatBoosting Regressor": CatBoostRegressor(),
                 "AdaBoost Regressor": AdaBoostRegressor(),
+                "GaussianProcess": GaussianProcessRegressor(),
+            #    "Dummy": DummyRegressor(),
             }
 
             model_report:dict=evaluate_models(
@@ -54,7 +65,8 @@ class ModelTrainer:
                 y_train=y_train,
                 X_test=X_test,
                 y_test=y_test,
-                models=models
+                models=models,
+                param=param_grids
             )
 
             ## Assumption: unique key with maximum value
